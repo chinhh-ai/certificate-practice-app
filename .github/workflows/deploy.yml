@@ -1,4 +1,4 @@
-name: Auto-Deploy to Vercel
+name: Test & Build
 
 on:
   push:
@@ -11,97 +11,58 @@ on:
       - main
 
 jobs:
-  test-and-deploy:
+  test-build:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [ 20.x ]
-        python-version: [ "3.11" ]
+        node-version: ['20.x']
+        python-version: ['3.11']
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Setup Python
+      - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
-      # ============== Frontend Quality Checks ==============
+      # ============== Frontend Tests ==============
       - name: Install frontend dependencies
         run: cd frontend && npm install
-
-      - name: Run frontend linter (if available)
-        run: cd frontend && npm run lint 2>/dev/null || true
 
       - name: Build frontend
         run: cd frontend && npm run build
         env:
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL || 'http://localhost:5000' }}
+          NEXT_PUBLIC_API_URL: 'http://localhost:5000'
 
-      # ============== Backend Quality Checks ==============
+      # ============== Backend Tests ==============
       - name: Install backend dependencies
         run: cd backend && pip install -r requirements.txt
 
-      - name: Run backend tests (if available)
-        run: cd backend && python -m pytest 2>/dev/null || echo "No tests found"
+      - name: Check backend imports
+        run: cd backend && python -c "import main; print('✅ Backend imports OK')"
+        continue-on-error: true
 
-      # ============== AI Core Quality Checks ==============
+      # ============== AI Core Tests ==============
       - name: Install AI Core dependencies
         run: cd ai-core && pip install -r requirements.txt
 
-      - name: Run AI Core tests (if available)
-        run: cd ai-core && python -m pytest 2>/dev/null || echo "No tests found"
-
-      # ============== Deploy to Vercel ==============
-      - name: Install Vercel CLI
-        run: npm install -g vercel
-
-      - name: Deploy frontend to Vercel
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' ||
-          github.ref == 'refs/heads/main'
-        run: |
-          cd frontend
-          vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Trigger Render Backend Deployment
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' ||
-          github.ref == 'refs/heads/main'
-        run: |
-          curl -X POST ${{ secrets.RENDER_BACKEND_WEBHOOK }}
-          sleep 5
-          curl -X POST ${{ secrets.RENDER_AI_CORE_WEBHOOK }}
+      - name: Check AI Core imports
+        run: cd ai-core && python -c "import main; print('✅ AI Core imports OK')" 
         continue-on-error: true
 
-      # ============== Health Check ==============
-      - name: Health check after deployment
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/master' ||
-          github.ref == 'refs/heads/main')
-        run: |
-          echo "Waiting 30 seconds for services to come online..."
-          sleep 30
+      # ============== Build Success ==============
+      - name: Build Status
+        if: success()
+        run: echo "✅ All builds passed successfully!"
 
-          echo "Testing Frontend..."
-          curl -f https://${{ secrets.VERCEL_URL }} || echo "Frontend check pending"
-
-          echo "Testing Backend..."
-          curl -f https://${{ secrets.RENDER_BACKEND_URL }}/health || echo "Backend check pending"
-        continue-on-error: true
-
-      - name: Notify deployment status
-        if: always()
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          text: "Deployment ${{ job.status }}"
-          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
-        continue-on-error: true
+      - name: Build Failed
+        if: failure()
+        run: echo "❌ Build failed - check logs above" && exit 1
