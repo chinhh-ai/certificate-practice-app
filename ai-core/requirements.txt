@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pypdf
+python-docx
+regex
+python-multipart
+openai
+google-generativeai
+tenacity
+python-dotenv

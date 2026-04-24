@@ -1,0 +1,24 @@
+﻿frontend-1  | 
+frontend-1  | > frontend@1.0.0 start
+frontend-1  | > next start -p 6000
+frontend-1  | 
+frontend-1  | Bad port: "6000" is reserved for x11
+frontend-1  | Read more: https://nextjs.org/docs/messages/reserved-port
+frontend-1  | 
+frontend-1  | > frontend@1.0.0 start
+frontend-1  | > next start -p 6000
+frontend-1  | 
+frontend-1  | Bad port: "6000" is reserved for x11
+frontend-1  | Read more: https://nextjs.org/docs/messages/reserved-port
+frontend-1  | 
+frontend-1  | > frontend@1.0.0 start
+frontend-1  | > next start -p 6000
+frontend-1  | 
+frontend-1  | Bad port: "6000" is reserved for x11
+frontend-1  | Read more: https://nextjs.org/docs/messages/reserved-port
+frontend-1  | 
+frontend-1  | > frontend@1.0.0 start
+frontend-1  | > next start -p 6000
+frontend-1  | 
+frontend-1  | Bad port: "6000" is reserved for x11
+frontend-1  | Read more: https://nextjs.org/docs/messages/reserved-port

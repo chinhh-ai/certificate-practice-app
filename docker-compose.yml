@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: certidb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  ai-core:
+    build:
+      context: ./ai-core
+    ports:
+      - "6100:6100"
+    volumes:
+      - ./ai-core:/app
+    env_file:
+      - .env
+    environment:
+      - PORT=6100
+
+  backend:
+    build:
+      context: ./backend
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - DATABASE_URL=postgresql://user:password@postgres:5432/certidb
+      - AI_CORE_URL=http://ai-core:6100
+    depends_on:
+      - postgres
+      - ai-core
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "6005:6005"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:5000
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

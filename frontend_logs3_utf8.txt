@@ -1,0 +1,8 @@
+﻿
+> frontend@1.0.0 start
+> next start -p 6005
+
+Γû▓ Next.js 16.2.1
+- Local:         http://localhost:6005
+- Network:       http://172.18.0.5:6005
+Γ£ô Ready in 504ms

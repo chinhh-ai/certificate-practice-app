@@ -1,0 +1,33 @@
+﻿backend-1  | INFO:     Started server process [1]
+backend-1  | INFO:     Waiting for application startup.
+backend-1  | INFO:     Application startup complete.
+backend-1  | INFO:     Uvicorn running on http://0.0.0.0:5000 (Press CTRL+C to quit)
+backend-1  | INFO:     172.18.0.1:32860 - "GET /analytics/summary HTTP/1.1" 200 OK
+backend-1  | INFO:     172.18.0.1:43816 - "GET /analytics/summary HTTP/1.1" 200 OK
+backend-1  | INFO:     172.18.0.1:43816 - "POST /practice/generate-exam?num_questions=10 HTTP/1.1" 200 OK
+backend-1  | INFO:     172.18.0.1:43816 - "GET /analytics/summary HTTP/1.1" 200 OK
+backend-1  | INFO:     172.18.0.1:58284 - "POST /content/upload HTTP/1.1" 500 Internal Server Error
+backend-1  | INFO:     Shutting down
+backend-1  | INFO:     Waiting for application shutdown.
+backend-1  | INFO:     Application shutdown complete.
+backend-1  | INFO:     Finished server process [1]
+backend-1  | INFO:     Started server process [1]
+backend-1  | INFO:     Waiting for application startup.
+backend-1  | INFO:     Application startup complete.
+backend-1  | INFO:     Uvicorn running on http://0.0.0.0:5000 (Press CTRL+C to quit)
+backend-1  | INFO:     172.18.0.1:51836 - "GET /analytics/summary HTTP/1.1" 200 OK
+backend-1  | INFO:     172.18.0.1:51836 - "POST /content/upload HTTP/1.1" 500 Internal Server Error
+backend-1  | INFO:     Shutting down
+backend-1  | INFO:     Waiting for application shutdown.
+backend-1  | INFO:     Application shutdown complete.
+backend-1  | INFO:     Finished server process [1]
+backend-1  | INFO:     Started server process [1]
+backend-1  | INFO:     Waiting for application startup.
+backend-1  | INFO:     Application startup complete.
+backend-1  | INFO:     Uvicorn running on http://0.0.0.0:5000 (Press CTRL+C to quit)
+backend-1  | INFO:     172.18.0.1:35660 - "GET /analytics/summary HTTP/1.1" 200 OK
+backend-1  | INFO:     172.18.0.1:41486 - "POST /content/upload HTTP/1.1" 500 Internal Server Error
+backend-1  | INFO:     Shutting down
+backend-1  | INFO:     Waiting for application shutdown.
+backend-1  | INFO:     Application shutdown complete.
+backend-1  | INFO:     Finished server process [1]
